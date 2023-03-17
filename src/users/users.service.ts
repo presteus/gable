@@ -1,26 +1,57 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { User } from './entities/user.entity';
 
 @Injectable()
 export class UsersService {
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+
+  /** 
+  *Compare l'email communiqué par l'utilisateur
+  */
+  async findOneByMail(email: string) {
+    return await User.findOneBy({ email: email })
   }
 
-  findAll() {
-    return `This action returns all users`;
+
+  /** 
+  *apres verification de doublon du controller, cree un nouvel utilisateur
+  */
+  async create(createUserDto: CreateUserDto) {
+    const user = await User.create({ ...createUserDto }).save();
+    return user;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+
+  /**
+  *permet de trouver une user par son ID
+  */
+  async findOneById(id: number) {
+    return await User.findOneBy({ id: id })
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+
+  /** 
+   * Pour trouver tous les utilisateurs 
+   * */
+  async findAllUsers() {
+    const data = await User.find();
+    return data
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+
+  /**
+   * pour update un User
+   */
+  async updateUser(id: number, updateUserDto: UpdateUserDto): Promise<User | null> {
+    const user = await User.findOneBy({ id })
+    if (user !== null) {
+      if (updateUserDto.email) user.email = updateUserDto.email /*si le front change l'email*/
+      if (updateUserDto.password) user.password = updateUserDto.password/*si le front change le password*/
+
+      return await user.save();
+    }
+
+    return null;
   }
 }

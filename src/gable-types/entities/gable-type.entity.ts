@@ -1,4 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
+import { IsNotEmpty } from "class-validator";
 import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 
@@ -11,6 +12,7 @@ export class GableType extends BaseEntity {
 
     @ApiProperty()
     @Column({ type: 'varchar' })
+    
     name: string
 
 

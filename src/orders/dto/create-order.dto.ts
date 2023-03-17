@@ -18,6 +18,7 @@ export class CreateOrderDto {
 
     @ApiProperty()
     @IsNumber()
+    
     total_price: number;
 
 }

@@ -10,11 +10,13 @@ import { User } from './users/entities/user.entity';
 import { Order } from './orders/entities/order.entity';
 import { GableComponent } from './gable-components/entities/gable-component.entity';
 import { GableType } from './gable-types/entities/gable-type.entity';
+import { ConfigModule } from '@nestjs/config';
 
 
 
 @Module({
   imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.DATABASE_HOST,

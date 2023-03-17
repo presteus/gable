@@ -1,4 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
+import { IsNotEmpty } from "class-validator";
 import { GableType } from "src/gable-types/entities/gable-type.entity";
 import { BaseEntity, Column, Entity, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { RamCapacite } from "../enum/capacite.enum";
@@ -18,32 +19,38 @@ export class GableComponent extends BaseEntity {
 
     @ApiProperty()
     @Column({ type: 'varchar' })
+
     name: string
 
 
     @ApiProperty()
     @Column({ type: 'varchar' })
+
     description: string
 
 
     @ApiProperty()
     @Column({ type: 'money' })
+
     price: number
 
 
     @ApiProperty()
     @Column({ type: 'varchar' })
+
     marque: string
 
 
 
     @ApiProperty()
     @Column({ type: 'varchar' })
+
     chipset: string
 
 
     @ApiProperty()
     @Column({ type: 'varchar' })
+
     socket: string
 
 
@@ -54,17 +61,17 @@ export class GableComponent extends BaseEntity {
 
 
     @ApiProperty()
-    @Column({ type: 'number' })
+    @Column()
     slot_nvme: number
 
 
     @ApiProperty()
-    @Column({ type: 'number' })
+    @Column()
     slot_sata: number
 
 
     @ApiProperty()
-    @Column({ type: 'number' })
+    @Column()
     ram_number: number
 
 
@@ -89,22 +96,22 @@ export class GableComponent extends BaseEntity {
 
 
     @ApiProperty()
-    @Column({ type: 'number' })
+    @Column()
     ssd_nvme: number
 
 
     @ApiProperty()
-    @Column({ type: 'number' })
+    @Column()
     ssd_sata: number
 
 
     @ApiProperty()
-    @Column({ type: 'number' })
+    @Column()
     hdd_sata: number
 
 
     @ApiProperty()
-    @Column({ type: 'number' })
+    @Column()
     pci: number
 
 
