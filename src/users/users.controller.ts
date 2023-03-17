@@ -70,7 +70,6 @@ export class UsersController {
 
 
   @Get('findusers')
-
   async findAll(@GetAdmin() _: User) {
     const data = await this.usersService.findAllUsers();
 
