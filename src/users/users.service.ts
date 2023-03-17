@@ -24,7 +24,7 @@ export class UsersService {
 
 
   /**
-  *permet de trouver une user par son ID
+  *permet de trouver une user par son ID (fonction admin)
   */
   async findOneById(id: number) {
     return await User.findOneBy({ id: id })

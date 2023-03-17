@@ -1,20 +1,22 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ConflictException, UseInterceptors, ClassSerializerInterceptor } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, ConflictException, UseInterceptors, ClassSerializerInterceptor, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
 import * as bcrypt from 'bcrypt';
 import { ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/jwt-auth-guards';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { User } from './entities/user.entity';
+import { GetUser } from 'src/auth/get-user.decorator';
+import { GetAdmin } from 'src/auth/get-admin.decorator';
 
 
 
 @ApiTags('users')
 @Controller('users')
+@UseGuards(JwtAuthGuard)
 
- /**
-   * Cache le mot de passe pour toute la classe UserController
-    */
 @UseInterceptors(
-  ClassSerializerInterceptor,
+  ClassSerializerInterceptor,/** Cache le mot de passe pour toute la classe UserController*/
 )
 export class UsersController {
   constructor(private readonly usersService: UsersService) { }
@@ -44,26 +46,37 @@ export class UsersController {
   }
 
 
-
-
-
-  @Get()
-  findAll() {
-    return this.usersService.findAll();
+  @Patch()
+  async updateUser(
+    @Body() updateUserDto: UpdateUserDto,
+    @GetUser() user: User
+  ) {
+    if (user !== null) {
+      if (updateUserDto.password)
+        updateUserDto.password = await bcrypt.hash(
+          updateUserDto.password,
+          10
+        );/* Crypte le nouveau mot de passe s'il est changé dans le front*/
+      const updateUser = await this.usersService.updateUser(
+        user.id,
+        updateUserDto
+      );
+      return {
+        message: 'Votre modification a bien été enregistrée',
+        data: updateUser /* Data totale modifiée */
+      }
+    }
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.usersService.findOne(+id);
-  }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(+id, updateUserDto);
-  }
+  @Get('findusers')
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.usersService.remove(+id);
+  async findAll(@GetAdmin() _: User) {
+    const data = await this.usersService.findAllUsers();
+
+    return {
+      message: 'Liste de tout les utilisateurs',
+      data: data
+    };
   }
 }

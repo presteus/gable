@@ -11,6 +11,7 @@ import { Order } from './orders/entities/order.entity';
 import { GableComponent } from './gable-components/entities/gable-component.entity';
 import { GableType } from './gable-types/entities/gable-type.entity';
 import { ConfigModule } from '@nestjs/config';
+import { AuthModule } from './auth/auth.module';
 
 
 
@@ -35,7 +36,8 @@ import { ConfigModule } from '@nestjs/config';
     UsersModule,
     OrdersModule,
     GableComponentsModule,
-    GableTypesModule
+    GableTypesModule,
+    AuthModule
   ],
   controllers: [AppController],
   providers: [AppService],

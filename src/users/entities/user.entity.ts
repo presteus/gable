@@ -22,17 +22,17 @@ export class User extends BaseEntity {
 
 
     @ApiProperty()
-    @Column({  type: 'varchar' })
+    @Column({ type: 'varchar' })
     prenom: string
 
 
     @ApiProperty()
-    @Column({  type: 'varchar' })
+    @Column({ type: 'varchar' })
     adresse: string
 
 
     @ApiProperty()
-    @Column({  type: 'varchar' })
+    @Column({ type: 'varchar' })
     email: string;
 
 
@@ -40,10 +40,15 @@ export class User extends BaseEntity {
     @ApiProperty()
     @Column({ type: 'varchar' })
     password: string;
-    
 
 
-    @OneToMany(() => Order, (orders) => orders.user) 
+    @ApiProperty()
+    @Column({ type: 'int', default: 1 })
+    access_lvl: number;
+
+
+
+    @OneToMany(() => Order, (orders) => orders.user)
     orders: Order;
 
 
