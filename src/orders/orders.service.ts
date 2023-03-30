@@ -1,15 +1,24 @@
 import { Injectable } from '@nestjs/common';
+import { User } from 'src/users/entities/user.entity';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
+import { Order } from './entities/order.entity';
 
 @Injectable()
 export class OrdersService {
-  create(createOrderDto: CreateOrderDto) {
-    return 'This action adds a new order';
+  async create(createOrderDto: CreateOrderDto): Promise<Order | null> {
+    const order = new Order()
+    order.created_at = createOrderDto.created_at
+    await order.save()
+    return order
   }
 
-  findAll() {
-    return `This action returns all orders`;
+
+
+  async findAll(): Promise<Order[] | null> {
+    return await Order.find({
+      relations: { user: true }
+    })
   }
 
   findOne(id: number) {

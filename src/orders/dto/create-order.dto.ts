@@ -14,11 +14,4 @@ export class CreateOrderDto {
     @IsDate()
     updated_at: Date;
 
-
-
-    @ApiProperty()
-    @IsNumber()
-    
-    total_price: number;
-
 }
