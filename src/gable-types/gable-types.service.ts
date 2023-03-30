@@ -19,6 +19,10 @@ export class GableTypesService {
     return data
   }
 
+  async findByNametype(name:string){
+    return await GableType.findOneBy({name:name});
+  }
+
   async findOneType(typeId: number) {
     const data = await GableType.findAndCountBy({ id: typeId });
     return data
@@ -34,11 +38,5 @@ export class GableTypesService {
     return data
   }
 
-  async removeType(typeId: number): Promise<GableType | null> {
-    const data = await GableType.findOneBy({ id: typeId });
-    if (data !== null) {
-      await data.remove()
-    }
-    return data
-  }
+
 }
