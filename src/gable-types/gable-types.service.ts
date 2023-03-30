@@ -2,25 +2,43 @@ import { Injectable } from '@nestjs/common';
 import { CreateGableTypeDto } from './dto/create-gable-type.dto';
 import { UpdateGableTypeDto } from './dto/update-gable-type.dto';
 
+import { GableType } from './entities/gable-type.entity'
+
 @Injectable()
 export class GableTypesService {
-  create(createGableTypeDto: CreateGableTypeDto) {
-    return 'This action adds a new gableType';
+  async createType(createGableTypeDto: CreateGableTypeDto) {
+    const newType = GableType.create({
+      name: createGableTypeDto.name
+    });
+    const data = await GableType.save(newType);
+    return data
+  };
+
+  async findAllTypes() {
+    const data = await GableType.find();
+    return data
   }
 
-  findAll() {
-    return `This action returns all gableTypes`;
+  async findOneType(typeId: number) {
+    const data = await GableType.findAndCountBy({ id: typeId });
+    return data
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} gableType`;
+  async updateType(typeId: number, updateGableTypeDto: UpdateGableTypeDto): Promise<GableType | null> {
+    const data = await GableType.findOneBy({ id: typeId });
+    if (data !== null) {
+      if (updateGableTypeDto.name)
+        data.name = updateGableTypeDto.name;
+      await data.save()
+    }
+    return data
   }
 
-  update(id: number, updateGableTypeDto: UpdateGableTypeDto) {
-    return `This action updates a #${id} gableType`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} gableType`;
+  async removeType(typeId: number): Promise<GableType | null> {
+    const data = await GableType.findOneBy({ id: typeId });
+    if (data !== null) {
+      await data.remove()
+    }
+    return data
   }
 }

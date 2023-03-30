@@ -23,7 +23,7 @@ export class Order extends BaseEntity {
 
 
     @ApiProperty()
-    @Column({ type: 'money' })
+    @Column()
     total_price: number
 
 
