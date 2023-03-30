@@ -1,7 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { GableComponent } from "src/gable-components/entities/gable-component.entity";
 import { User } from "src/users/entities/user.entity";
-import { BaseEntity, Column, CreateDateColumn, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { BaseEntity, CreateDateColumn, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 
 
@@ -20,11 +20,6 @@ export class Order extends BaseEntity {
     @ApiProperty()
     @UpdateDateColumn({ type: 'timestamptz', default: null })
     updated_at: Date;
-
-
-    @ApiProperty()
-    @Column()
-    total_price: number
 
 
     @ManyToOne(() => User, (user) => user.orders)
