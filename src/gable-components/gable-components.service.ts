@@ -13,13 +13,23 @@ export class GableComponentsService {
     return data
   }
 
-  
+
   async findAll() {
     const data = await GableComponent.find();
     return data
   }
 
 
+  async findByName(name: string) {
+    return await GableComponent.findOneBy({ name: name })
+  }
+
+
+  async findByMarque(marque: string) {
+    return await GableComponent.findOneBy({ marque: marque })
+  }
+
+  
   async findOne(componentId: number) {
     const data = await GableComponent.findOneBy({
       id: componentId
@@ -56,6 +66,7 @@ export class GableComponentsService {
       data.socket = updateGableComponentDto.socket
       data.ssd_nvme = updateGableComponentDto.slot_nvme
       data.ssd_sata = updateGableComponentDto.ssd_sata
+      data.types = updateGableComponentDto.types
       await data.save()
     }
   }

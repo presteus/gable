@@ -99,5 +99,8 @@ export class CreateGableComponentDto {
     @IsNumber()
     pci: number
 
-
+    @ApiProperty()
+    @IsNumber()
+    types: number
+    
 }

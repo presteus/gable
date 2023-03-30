@@ -2,33 +2,107 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { GableComponentsService } from './gable-components.service';
 import { CreateGableComponentDto } from './dto/create-gable-component.dto';
 import { UpdateGableComponentDto } from './dto/update-gable-component.dto';
+import { ApiTags } from '@nestjs/swagger';
+import { ConflictException, NotFoundException } from '@nestjs/common/exceptions';
 
-@Controller('gable-components')
+
+
+@ApiTags('components')
+@Controller('components')
 export class GableComponentsController {
-  constructor(private readonly gableComponentsService: GableComponentsService) {}
+  constructor(private readonly gableComponentsService: GableComponentsService) { }
+
+
 
   @Post()
-  create(@Body() createGableComponentDto: CreateGableComponentDto) {
-    return this.gableComponentsService.create(createGableComponentDto);
+  async create(@Body() createGableComponentDto: CreateGableComponentDto) {
+    const verifName = await this.gableComponentsService.findByName(createGableComponentDto.name)
+
+    if (verifName) {
+      throw new ConflictException('Composant deja éxistant')
+    };
+    const newComponent = await this.gableComponentsService.create(createGableComponentDto);
+    return {
+      message: 'nouveau composant ajouté',
+      data: newComponent
+    }
   }
+
+
 
   @Get()
-  findAll() {
-    return this.gableComponentsService.findAll();
+  async findAll() {
+    const data = await this.gableComponentsService.findAll();
+
+    if (data.length != 0) {
+      return {
+        message: "liste des composants disponible",
+        data: data
+      }
+    }
+    return {
+      message: "aucun composant disponible",
+      data: data
+    }
   }
+
+
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.gableComponentsService.findOne(+id);
+  async findOne(@Param('id') id: number) {
+    const data = await this.gableComponentsService.findOne(+id)
+
+    if (!data) {
+      throw new NotFoundException("l'ID ne correspond à aucun composant")
+    };
+    return {
+      message: 'Composant:',
+      data: data
+    }
   }
+
+
+
+  @Get(':marque')
+  async findMarque(@Param('marque') marque: string) {
+    const data = await this.gableComponentsService.findByMarque(marque)
+
+    if (!data) {
+      throw new NotFoundException("Aucun composant de cette marque dans la base de donnée")
+    }
+    return {
+      message: "composants de cette marque:",
+      data: data
+    }
+  }
+
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateGableComponentDto: UpdateGableComponentDto) {
-    return this.gableComponentsService.update(+id, updateGableComponentDto);
+  async update(@Param('id') id: number, @Body() updateGableComponentDto: UpdateGableComponentDto) {
+    const data = await this.gableComponentsService.findOne(+id);
+    if (!data) {
+      throw new NotFoundException("l'ID ne correspond à aucun composants")
+    }
+    const result = await this.gableComponentsService.update(data.id, updateGableComponentDto);
+    return {
+      message: "Composant modifié",
+      data: result
+    }
   }
 
+
+
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.gableComponentsService.remove(+id);
+  async remove(@Param('id') id: number) {
+    const data = await this.gableComponentsService.findOne(+id);
+
+    if (!data) {
+      throw new NotFoundException("l'ID ne correspond à aucun composant")
+    }
+    const remove = await this.gableComponentsService.remove(id)
+    return {
+      message: "Le composant à bien été supprimé",
+      data: remove
+    }
   }
 }
