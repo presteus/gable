@@ -33,6 +33,7 @@ export class GableComponentsService {
 
 
   async findComponentsByType(typesId: number) {
+
     return await Composant.find({
       where: {
         types: {
@@ -44,9 +45,9 @@ export class GableComponentsService {
 
 
   async findByMarque(marque: string) {
-    return await Composant.findBy({ marque: marque})
+    return await Composant.findBy({ marque: marque })
   }
-  
+
 
   async findOne(componentId: number) {
     const data = await Composant.findOneBy({
