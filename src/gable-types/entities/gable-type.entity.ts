@@ -1,10 +1,11 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsNotEmpty } from "class-validator";
+import { Composant } from "src/gable-components/entities/gable-component.entity";
 import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 
 @Entity('types')
-export class GableType extends BaseEntity {
+export class Type extends BaseEntity {
 
     @ApiProperty()
     @PrimaryGeneratedColumn({ type: 'int' })
@@ -12,12 +13,12 @@ export class GableType extends BaseEntity {
 
     @ApiProperty()
     @Column({ type: 'varchar' })
-    
+
     name: string
 
 
-    /*   @OneToMany(() => GableComponent, (components) => components.types)
-      components: GableComponent; */
+    @OneToMany(type => Composant, (components) => components.types)
+    components: Composant[];
 
 
 

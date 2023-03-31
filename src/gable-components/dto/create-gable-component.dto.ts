@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsEnum, IsNotEmpty, IsNumber, IsString } from "class-validator";
+import { IsEnum, IsInt, IsNotEmpty, IsNumber, IsString } from "class-validator";
 import { RamCapacite } from "../enum/capacite.enum";
 import { GCFormat } from "../enum/format.enum";
 import { RamFrequence } from "../enum/frequence.enum";
@@ -100,7 +100,7 @@ export class CreateGableComponentDto {
     pci: number
 
     @ApiProperty()
-    @IsNumber()
-    types: number
+    @IsInt()
+    typeId: number
     
 }

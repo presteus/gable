@@ -63,11 +63,11 @@ export class GableComponentsController {
 
 
 
-  @Get(':marque')
-  async findMarque(@Param('marque') marque: string) {
-    const data = await this.gableComponentsService.findByMarque(marque)
+  @Post('marque')
+  async findMarque(@Body() marque: {marque:string}) {
+    const data = await this.gableComponentsService.findByMarque(marque.marque)
 
-    if (!data) {
+    if (data.length ===0) {
       throw new NotFoundException("Aucun composant de cette marque dans la base de donnée")
     }
     return {
@@ -84,10 +84,14 @@ export class GableComponentsController {
       throw new NotFoundException("l'ID ne correspond à aucun composants")
     }
     const result = await this.gableComponentsService.update(data.id, updateGableComponentDto);
+    console.log(result);
     return {
       message: "Composant modifié",
-      data: result
+      data: result,
+      
     }
+    
+    
   }
 
 

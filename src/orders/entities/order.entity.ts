@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { GableComponent } from "src/gable-components/entities/gable-component.entity";
+import { Composant } from "src/gable-components/entities/gable-component.entity";
 import { User } from "src/users/entities/user.entity";
 import { BaseEntity, CreateDateColumn, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
@@ -26,9 +26,9 @@ export class Order extends BaseEntity {
     user: User;
 
     
-    @ManyToMany(() => GableComponent, (components) => components.id)
+    @ManyToMany(() => Composant, (components) => components.id)
     @JoinTable()
-    components: GableComponent
+    components: Composant
 
 
 

@@ -8,8 +8,8 @@ import { GableTypesModule } from './gable-types/gable-types.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './users/entities/user.entity';
 import { Order } from './orders/entities/order.entity';
-import { GableComponent } from './gable-components/entities/gable-component.entity';
-import { GableType } from './gable-types/entities/gable-type.entity';
+import { Composant } from './gable-components/entities/gable-component.entity';
+import { Type } from './gable-types/entities/gable-type.entity';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 
@@ -28,8 +28,8 @@ import { AuthModule } from './auth/auth.module';
       entities: [
         User,
         Order,
-        GableComponent,
-        GableType
+        Composant,
+        Type
       ],
       synchronize: true,
     }),

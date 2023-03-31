@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, ConflictException, UseInterceptors, ClassSerializerInterceptor, UseGuards } from '@nestjs/common';
+import { Controller, Post, Body, Patch, ConflictException, UseInterceptors, ClassSerializerInterceptor, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import * as bcrypt from 'bcrypt';
@@ -13,7 +13,7 @@ import { GetAdmin } from 'src/auth/get-admin.decorator';
 
 @ApiTags('users')
 @Controller('users')
-@UseGuards(JwtAuthGuard)
+
 
 @UseInterceptors(
   ClassSerializerInterceptor,/** Cache le mot de passe pour toute la classe UserController*/
@@ -45,7 +45,7 @@ export class UsersController {
     }
   }
 
-
+  @UseGuards(JwtAuthGuard)
   @Patch()
   async updateUser(
     @Body() updateUserDto: UpdateUserDto,
@@ -69,13 +69,13 @@ export class UsersController {
   }
 
 
-  @Get('findusers')
-  async findAll(@GetAdmin() _: User) {
-    const data = await this.usersService.findAllUsers();
-
-    return {
-      message: 'Liste de tout les utilisateurs',
-      data: data
-    };
-  }
+  /*  @Get('findusers')
+   async findAll(@GetAdmin() _: User) {
+     const data = await this.usersService.findAllUsers();
+ 
+     return {
+       message: 'Liste de tout les utilisateurs',
+       data: data
+     };
+   } */
 }

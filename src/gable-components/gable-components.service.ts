@@ -1,45 +1,63 @@
 import { Injectable } from '@nestjs/common';
+import { Type } from 'src/gable-types/entities/gable-type.entity';
 import { CreateGableComponentDto } from './dto/create-gable-component.dto';
 import { UpdateGableComponentDto } from './dto/update-gable-component.dto';
-import { GableComponent } from './entities/gable-component.entity';
+import { Composant } from './entities/gable-component.entity';
 
 @Injectable()
 export class GableComponentsService {
   async create(createGableComponentDto: CreateGableComponentDto) {
-    const newComponents = GableComponent.create({
-      ...createGableComponentDto
+    const type = await Type.findOneBy({ id: createGableComponentDto.typeId });
+
+    const compo: any = { ...createGableComponentDto };
+
+    compo.types = type;
+
+    const newComponents = Composant.create({
+      ...compo
     });
-    const data = await GableComponent.save(newComponents);
+    const data = await Composant.save(newComponents);
     return data
   }
 
 
   async findAll() {
-    const data = await GableComponent.find();
+    const data = await Composant.find();
     return data
   }
 
 
   async findByName(name: string) {
-    return await GableComponent.findOneBy({ name: name })
+    return await Composant.findOneBy({ name: name })
+  }
+
+
+  async findComponentsByType(typesId: number) {
+    return await Composant.find({
+      where: {
+        types: {
+          id: typesId
+        }
+      }
+    })
   }
 
 
   async findByMarque(marque: string) {
-    return await GableComponent.findOneBy({ marque: marque })
+    return await Composant.findBy({ marque: marque})
   }
-
   
+
   async findOne(componentId: number) {
-    const data = await GableComponent.findOneBy({
+    const data = await Composant.findOneBy({
       id: componentId
     });
     return data
   }
 
 
-  async update(componentId: number, updateGableComponentDto: UpdateGableComponentDto): Promise<GableComponent | null> {
-    let data = await GableComponent.findOneBy({
+  async update(componentId: number, updateGableComponentDto: UpdateGableComponentDto): Promise<Composant | null> {
+    let data = await Composant.findOneBy({
       id: componentId
     });
 
@@ -66,14 +84,15 @@ export class GableComponentsService {
       data.socket = updateGableComponentDto.socket
       data.ssd_nvme = updateGableComponentDto.slot_nvme
       data.ssd_sata = updateGableComponentDto.ssd_sata
-      data.types = updateGableComponentDto.types
+      //data.typeId = updateGableComponentDto.typeId
       await data.save()
     }
+    return data
   }
 
 
-  async remove(componentId: number): Promise<GableComponent | null> {
-    const data = await GableComponent.findOneBy({ id: componentId });
+  async remove(componentId: number): Promise<Composant | null> {
+    const data = await Composant.findOneBy({ id: componentId });
     if (data !== null) {
       await data.remove();
     }

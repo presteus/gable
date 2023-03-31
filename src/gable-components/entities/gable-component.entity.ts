@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { GableType } from "src/gable-types/entities/gable-type.entity";
+import { Type } from "src/gable-types/entities/gable-type.entity";
 import { BaseEntity, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { RamCapacite } from "../enum/capacite.enum";
 import { GCFormat } from "../enum/format.enum";
@@ -9,7 +9,7 @@ import { RamFrequence } from "../enum/frequence.enum";
 
 
 @Entity('components')
-export class GableComponent extends BaseEntity {
+export class Composant extends BaseEntity {
 
     @ApiProperty()
     @PrimaryGeneratedColumn({ type: 'int' })
@@ -114,8 +114,7 @@ export class GableComponent extends BaseEntity {
     pci: number
 
 
-    @ManyToOne(() => GableType, (types) => types.id)
-
-    types: number
+    @ManyToOne(() => Type, (type) => type.components)
+    types: Composant
 
 }
