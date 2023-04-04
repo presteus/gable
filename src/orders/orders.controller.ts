@@ -52,7 +52,7 @@ export class OrdersController {
 
 
 
-  /* @Patch(':id')
+  @Patch(':id')
   async update(@Param('id') id: number, @Body() updateOrderDto: UpdateOrderDto) {
     const data = await this.ordersService.updateOrder(+id, updateOrderDto);
     if (!data) {
@@ -64,7 +64,7 @@ export class OrdersController {
       data: save
     }
   }
- */
+
 
 
   @Delete(':id')

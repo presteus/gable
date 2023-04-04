@@ -9,9 +9,9 @@ import { In } from 'typeorm';
 @Injectable()
 export class OrdersService {
 
-  async createOrder( createOrderDto: CreateOrderDto): Promise<Order | null> {
-    const foundComposant= await Composant.findBy({
-      id:In(createOrderDto.componentId)
+  async createOrder(createOrderDto: CreateOrderDto): Promise<Order | null> {
+    const foundComposant = await Composant.findBy({
+      id: In(createOrderDto.componentId)
     });
     const newOrder = Order.create({
       created_at: createOrderDto.created_at,
@@ -32,24 +32,31 @@ export class OrdersService {
 
 
   async findOneOrder(orderId: number): Promise<Order | null> {
-    const data = await Order.findOneBy({ id: orderId });
+    const data = await Order.findOne({
+      where: { id: orderId },
+      relations: { components: true }
+    });
     return data
   }
 
 
 
-  /* async updateOrder(orderId: number, updateOrderDto: UpdateOrderDto): Promise<Order | null> {
+  async updateOrder(orderId: number, updateOrderDto: UpdateOrderDto): Promise<Order | null> {
+
     const data = await Order.findOneBy({ id: orderId });
     if (data === null) {
       return null
     }
     if (updateOrderDto) {
+      const foundComposant = await Composant.findBy({
+        id: In(updateOrderDto.componentId)
+      });
       data.updated_at = updateOrderDto.updated_at,
-        data.components = updateOrderDto.componentId
+        data.components = foundComposant
       await data.save()
     }
     return data
-  } */
+  }
 
 
 
