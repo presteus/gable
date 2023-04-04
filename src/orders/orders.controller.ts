@@ -12,7 +12,7 @@ export class OrdersController {
 
   @Post()
   async create(@Body() createOrderDto: CreateOrderDto) {
-    const data = await this.ordersService.create(createOrderDto);
+    const data = await this.ordersService.createOrder(createOrderDto);
     return {
       message: "nouvel Order Creer",
       data: data
@@ -23,7 +23,7 @@ export class OrdersController {
 
   @Get()
   async findAll() {
-    const data = await this.findAll();
+    const data = await this.ordersService.findAllOrders();
     if (data.length != 0) {
       return {
         message: "liste des Orders disponibles:",
@@ -40,7 +40,7 @@ export class OrdersController {
 
   @Get(':id')
   async findOne(@Param('id') id: number) {
-    const data = await this.findOne(+id);
+    const data = await this.ordersService.findOneOrder(+id);
     if (!data) {
       throw new NotFoundException("L'ID ne correspond a aucun Order")
     }
@@ -52,9 +52,9 @@ export class OrdersController {
 
 
 
-  @Patch(':id')
+  /* @Patch(':id')
   async update(@Param('id') id: number, @Body() updateOrderDto: UpdateOrderDto) {
-    const data = await this.findOne(+id);
+    const data = await this.ordersService.updateOrder(+id, updateOrderDto);
     if (!data) {
       throw new NotFoundException("L'ID ne correspond a aucun order");
     }
@@ -64,16 +64,16 @@ export class OrdersController {
       data: save
     }
   }
-
+ */
 
 
   @Delete(':id')
   async remove(@Param('id') id: number) {
-    const data = await this.findOne(+id);
+    const data = await this.ordersService.findOneOrder(+id);
     if (!data) {
       throw new NotFoundException("L'ID ne correspond a aucun Order")
     }
-    const remove = await this.remove(id);
+    const remove = await this.ordersService.removeOrder(id);
     return {
       message: "L'order a bien ete supprime",
       data: remove

@@ -28,7 +28,7 @@ export class Order extends BaseEntity {
     
     @ManyToMany(() => Composant, (components) => components.id)
     @JoinTable()
-    components: number[]
+    components: Composant[]
 
 
 
