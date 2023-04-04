@@ -1,4 +1,4 @@
-import { IsDate, IsNotEmpty, IsNumber, IsOptional } from "class-validator";
+import { ArrayNotEmpty, IsArray, IsDate, IsNotEmpty, IsNumber, IsOptional } from "class-validator";
 import { ApiProperty } from "@nestjs/swagger"
 
 export class CreateOrderDto {
@@ -14,4 +14,8 @@ export class CreateOrderDto {
     @IsDate()
     updated_at: Date;
 
+
+    @IsArray()
+    @ArrayNotEmpty()
+    componentId: number[];
 }

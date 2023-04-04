@@ -1,11 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { User } from 'src/users/entities/user.entity';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { Order } from './entities/order.entity';
 
+
 @Injectable()
 export class OrdersService {
+
   async create(createOrderDto: CreateOrderDto): Promise<Order | null> {
     const order = new Order()
     order.created_at = createOrderDto.created_at
@@ -17,19 +18,40 @@ export class OrdersService {
 
   async findAll(): Promise<Order[] | null> {
     return await Order.find({
-      relations: { user: true }
+      relations: { user: true, components: true }
     })
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} order`;
+
+
+  async findOne(orderId: number): Promise<Order | null> {
+    const data = await Order.findOneBy({ id: orderId });
+    return data
   }
 
-  update(id: number, updateOrderDto: UpdateOrderDto) {
-    return `This action updates a #${id} order`;
+
+
+  async update(orderId: number, updateOrderDto: UpdateOrderDto): Promise<Order | null> {
+    const data = await Order.findOneBy({ id: orderId });
+    if (data === null) {
+      return null
+    }
+    if (updateOrderDto) {
+      data.updated_at = updateOrderDto.updated_at,
+        data.components = updateOrderDto.componentId
+      await data.save()
+    }
+    return data
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} order`;
+
+
+
+  async remove(orderId: number): Promise<Order | null> {
+    const data = await Order.findOneBy({ id: orderId });
+    if (data !== null) {
+      await data.remove();
+    }
+    return data
   }
 }

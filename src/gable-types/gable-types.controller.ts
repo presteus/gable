@@ -29,7 +29,7 @@ export class GableTypesController {
     const data = await this.gableTypesService.findAllTypes();
     if (data.length != 0) {
       return {
-        message: 'liste des types disponible',
+        message: 'liste des types disponible:',
         data: data
       }
     }

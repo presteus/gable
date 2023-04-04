@@ -1,34 +1,82 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, NotFoundException } from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+
+@ApiTags('Orders')
 @Controller('orders')
 export class OrdersController {
-  constructor(private readonly ordersService: OrdersService) {}
+  constructor(private readonly ordersService: OrdersService) { }
 
   @Post()
-  create(@Body() createOrderDto: CreateOrderDto) {
-    return this.ordersService.create(createOrderDto);
+  async create(@Body() createOrderDto: CreateOrderDto) {
+    const data = await this.ordersService.create(createOrderDto);
+    return {
+      message: "nouvel Order Creer",
+      data: data
+    }
   }
+
+
 
   @Get()
-  findAll() {
-    return this.ordersService.findAll();
+  async findAll() {
+    const data = await this.findAll();
+    if (data.length != 0) {
+      return {
+        message: "liste des Orders disponibles:",
+        data: data
+      }
+    }
+    return {
+      message: "aucun Orders Disponible:",
+      data: data
+    }
   }
+
+
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.ordersService.findOne(+id);
+  async findOne(@Param('id') id: number) {
+    const data = await this.findOne(+id);
+    if (!data) {
+      throw new NotFoundException("L'ID ne correspond a aucun Order")
+    }
+    return {
+      message: 'Order:',
+      data: data
+    }
   }
+
+
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateOrderDto: UpdateOrderDto) {
-    return this.ordersService.update(+id, updateOrderDto);
+  async update(@Param('id') id: number, @Body() updateOrderDto: UpdateOrderDto) {
+    const data = await this.findOne(+id);
+    if (!data) {
+      throw new NotFoundException("L'ID ne correspond a aucun order");
+    }
+    const save = await this.update(id, updateOrderDto);
+    return {
+      message: "order modifie",
+      data: save
+    }
   }
 
+
+
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.ordersService.remove(+id);
+  async remove(@Param('id') id: number) {
+    const data = await this.findOne(+id);
+    if (!data) {
+      throw new NotFoundException("L'ID ne correspond a aucun Order")
+    }
+    const remove = await this.remove(id);
+    return {
+      message: "L'order a bien ete supprime",
+      data: remove
+    }
   }
 }
