@@ -66,8 +66,8 @@ export class GableComponentsController {
 
 
 
-  @Post('marque')
-  async findMarque(@Body() marque: { marque: string }) {
+  @Get('/marque/:nom_marque')
+  async findMarque(@Param() marque: { marque: string }) {
     const data = await this.gableComponentsService.findByMarque(marque.marque)
 
     if (data.length === 0) {
@@ -81,8 +81,8 @@ export class GableComponentsController {
 
 
 
-  @Post('type')
-  async findByType(@Body() body: { typeId: number }) {
+  @Get('/type/:nom_type')
+  async findByType(@Param() body: { typeId: number }) {
     const data = await this.gableComponentsService.findComponentsByType(body.typeId)
     if (data.length === 0) {
       throw new NotFoundException('Aucun composant de ce type dans la Base de donnée')
