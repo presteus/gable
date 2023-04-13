@@ -25,7 +25,7 @@ export class Order extends BaseEntity {
     @ManyToOne(() => User, (user) => user.orders)
     user: User;
 
-    
+
     @ManyToMany(() => Composant, (components) => components.id)
     @JoinTable()
     components: Composant[]

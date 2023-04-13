@@ -1,18 +1,22 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, NotFoundException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, NotFoundException, UseGuards } from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/jwt-auth-guards';
+import { GetUser } from 'src/auth/get-user.decorator';
+import { User } from 'src/users/entities/user.entity';
 
 
 @ApiTags('Orders')
 @Controller('orders')
+@UseGuards(JwtAuthGuard)
 export class OrdersController {
   constructor(private readonly ordersService: OrdersService) { }
 
   @Post()
-  async create(@Body() createOrderDto: CreateOrderDto) {
-    const data = await this.ordersService.createOrder(createOrderDto);
+  async create(@Body() createOrderDto: CreateOrderDto,@GetUser() user:User) {
+    const data = await this.ordersService.createOrder(createOrderDto,user);
     return {
       message: "nouvel Order Creer",
       data: data
@@ -22,11 +26,11 @@ export class OrdersController {
 
 
   @Get()
-  async findAll() {
-    const data = await this.ordersService.findAllOrders();
+  async findAll(@GetUser() user:User) {
+    const data = await this.ordersService.findAllOrders(user);
     if (data.length != 0) {
       return {
-        message: "liste des Orders disponibles:",
+        message: `liste des Orders disponibles:`,
         data: data
       }
     }

@@ -4,18 +4,19 @@ import { UpdateOrderDto } from './dto/update-order.dto';
 import { Order } from './entities/order.entity';
 import { Composant } from 'src/gable-components/entities/gable-component.entity';
 import { In } from 'typeorm';
+import { User } from 'src/users/entities/user.entity';
 
 
 @Injectable()
 export class OrdersService {
 
-  async createOrder(createOrderDto: CreateOrderDto): Promise<Order | null> {
+  async createOrder(createOrderDto: CreateOrderDto,user:User): Promise<Order | null> {
     const foundComposant = await Composant.findBy({
       id: In(createOrderDto.componentId)
     });
     const newOrder = Order.create({
-      created_at: createOrderDto.created_at,
-      components: foundComposant
+      components: foundComposant,
+      user:user
     })
     const data = await Order.save(newOrder);
     return data
@@ -23,8 +24,11 @@ export class OrdersService {
 
 
 
-  async findAllOrders(): Promise<Order[] | null> {
+  async findAllOrders(user: User): Promise<Order[] | null> {
     return await Order.find({
+      where: {
+        user: { id: user.id }
+      },
       relations: { user: true, components: true }
     })
   }
@@ -51,8 +55,7 @@ export class OrdersService {
       const foundComposant = await Composant.findBy({
         id: In(updateOrderDto.componentId)
       });
-      data.updated_at = updateOrderDto.updated_at,
-        data.components = foundComposant
+      data.components = foundComposant
       await data.save()
     }
     return data

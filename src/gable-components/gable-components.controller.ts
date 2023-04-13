@@ -1,9 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { GableComponentsService } from './gable-components.service';
 import { CreateGableComponentDto } from './dto/create-gable-component.dto';
 import { UpdateGableComponentDto } from './dto/update-gable-component.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { ConflictException, NotFoundException } from '@nestjs/common/exceptions';
+import { JwtAuthGuard } from 'src/auth/jwt-auth-guards';
+import { GetAdmin } from 'src/auth/get-admin.decorator';
+import { User } from 'src/users/entities/user.entity';
 
 
 
@@ -13,9 +16,9 @@ export class GableComponentsController {
   constructor(private readonly gableComponentsService: GableComponentsService) { }
 
 
-
+  @UseGuards(JwtAuthGuard)
   @Post()
-  async create(@Body() createGableComponentDto: CreateGableComponentDto) {
+  async create(@Body() createGableComponentDto: CreateGableComponentDto, @GetAdmin() _: User) {
     const verifName = await this.gableComponentsService.findByName(createGableComponentDto.name)
 
     if (verifName) {
@@ -93,7 +96,8 @@ export class GableComponentsController {
 
 
   @Patch(':id')
-  async update(@Param('id') id: number, @Body() updateGableComponentDto: UpdateGableComponentDto) {
+  @UseGuards(JwtAuthGuard)
+  async update(@Param('id') id: number, @Body() updateGableComponentDto: UpdateGableComponentDto, @GetAdmin() _: User) {
     const data = await this.gableComponentsService.findOne(+id);
     if (!data) {
       throw new NotFoundException("l'ID ne correspond à aucun composants")
@@ -111,7 +115,8 @@ export class GableComponentsController {
 
 
   @Delete(':id')
-  async remove(@Param('id') id: number) {
+  @UseGuards(JwtAuthGuard)
+  async remove(@Param('id') id: number, @GetAdmin() _: User) {
     const data = await this.gableComponentsService.findOne(+id);
 
     if (!data) {
