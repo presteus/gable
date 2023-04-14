@@ -7,7 +7,7 @@ import { JwtAuthGuard } from 'src/auth/jwt-auth-guards';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import { GetUser } from 'src/auth/get-user.decorator';
-import { GetAdmin } from 'src/auth/get-admin.decorator';
+
 
 
 

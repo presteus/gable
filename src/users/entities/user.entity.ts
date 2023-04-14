@@ -2,6 +2,7 @@ import { ApiProperty } from "@nestjs/swagger";
 import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn, Unique } from "typeorm";
 import { Exclude } from 'class-transformer';
 import { Order } from "src/orders/entities/order.entity";
+import { IsOptional } from "class-validator";
 
 
 
@@ -17,17 +18,19 @@ export class User extends BaseEntity {
 
 
     @ApiProperty()
-    @Column({ type: 'varchar' })
+    @Column({ type: 'varchar', nullable:true })
+
     nom: string
 
 
     @ApiProperty()
-    @Column({ type: 'varchar' })
+    @Column({ type: 'varchar', nullable:true })
+    @IsOptional()
     prenom: string
 
 
     @ApiProperty()
-    @Column({ type: 'varchar' })
+    @Column({ type: 'varchar', nullable:true })
     adresse: string
 
 
