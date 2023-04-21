@@ -115,6 +115,6 @@ export class Composant extends BaseEntity {
 
 
     @ManyToOne(() => Type, (type) => type.components)
-    types: Composant
+    types: Type
 
 }

@@ -32,12 +32,14 @@ export class GableComponentsService {
   }
 
 
-  async findComponentsByType(typesId: number) {
+  async findComponentsByType(name: string) {
+    
 
     return await Composant.find({
+      relations : { types : true },
       where: {
         types: {
-          id: typesId
+          name:name
         }
       }
     })
