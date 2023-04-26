@@ -18,7 +18,7 @@ export class OrdersController {
   async create(@Body() createOrderDto: CreateOrderDto,@GetUser() user:User) {
     const data = await this.ordersService.createOrder(createOrderDto,user);
     return {
-      message: "nouvel Order Creer",
+      message: "nouvel Order Créer",
       data: data
     }
   }

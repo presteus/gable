@@ -20,6 +20,7 @@ import { AuthModule } from './auth/auth.module';
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot({
       type: 'postgres',
+      logging: true,
       host: process.env.DATABASE_HOST,
       port: parseInt(process.env.DATABASE_PORT!),
       username: process.env.DATABASE_USERNAME,

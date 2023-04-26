@@ -14,6 +14,12 @@ export class OrdersService {
     const foundComposant = await Composant.findBy({
       id: In(createOrderDto.componentId)
     });
+   /* 
+    const foundComposant = await Promise.all([
+      ...createOrderDto.componentId.map(async item => Composant.findOneBy({id : item}) )
+    ])
+    console.log(foundComposant);
+     */
     const newOrder = Order.create({
       components: foundComposant,
       user:user
