@@ -48,6 +48,9 @@ export class UsersService {
     if (user !== null) {
       if (updateUserDto.email) user.email = updateUserDto.email /*si le front change l'email*/
       if (updateUserDto.password) user.password = updateUserDto.password/*si le front change le password*/
+      if (updateUserDto.nom) user.nom = updateUserDto.nom
+      if (updateUserDto.prenom) user.prenom = updateUserDto.prenom
+      if (updateUserDto.adresse) user.adresse = updateUserDto.adresse
 
       return await user.save();
     }

@@ -62,7 +62,7 @@ export class UsersController {
         updateUserDto
       );
       return {
-        message: 'Votre modification a bien été enregistrée',
+        message: 'modifications enregistrées',
         data: updateUser /* Data totale modifiée */
       }
     }
