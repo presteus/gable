@@ -18,38 +18,32 @@ export class Composant extends BaseEntity {
 
     @ApiProperty()
     @Column({ type: 'varchar' })
-
     name: string
 
 
     @ApiProperty()
     @Column({ type: 'varchar' })
-
     description: string
 
 
     @ApiProperty()
     @Column({ type: 'money' })
-
     price: number
 
 
     @ApiProperty()
     @Column({ type: 'varchar' })
-
     marque: string
 
 
 
     @ApiProperty()
     @Column({ type: 'varchar' })
-
     chipset: string
 
 
     @ApiProperty()
     @Column({ type: 'varchar' })
-
     socket: string
 
 

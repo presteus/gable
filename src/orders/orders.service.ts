@@ -14,12 +14,7 @@ export class OrdersService {
     const foundComposant = await Composant.findBy({
       id: In(createOrderDto.componentId)
     });
-   /* 
-    const foundComposant = await Promise.all([
-      ...createOrderDto.componentId.map(async item => Composant.findOneBy({id : item}) )
-    ])
-    console.log(foundComposant);
-     */
+  
     const newOrder = Order.create({
       components: foundComposant,
       user:user
@@ -44,7 +39,7 @@ export class OrdersService {
   async findOneOrder(orderId: number): Promise<Order | null> {
     const data = await Order.findOne({
       where: { id: orderId },
-      relations: { components: true }
+      relations: { components: {types:true} }
     });
     return data
   }

@@ -31,6 +31,4 @@ export class Order extends BaseEntity {
     components: Composant[]
 
 
-
-
 }
