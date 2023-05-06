@@ -14,11 +14,11 @@ export class Order extends BaseEntity {
 
 
     @ApiProperty()
-    @CreateDateColumn({ type: 'timestamptz' })
+    @CreateDateColumn()
     created_at: Date
 
     @ApiProperty()
-    @UpdateDateColumn({ type: 'timestamptz', default: null })
+    @UpdateDateColumn()
     updated_at: Date;
 
 

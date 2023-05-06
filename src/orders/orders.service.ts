@@ -10,14 +10,14 @@ import { User } from 'src/users/entities/user.entity';
 @Injectable()
 export class OrdersService {
 
-  async createOrder(createOrderDto: CreateOrderDto,user:User): Promise<Order | null> {
+  async createOrder(createOrderDto: CreateOrderDto, user: User): Promise<Order | null> {
     const foundComposant = await Composant.findBy({
       id: In(createOrderDto.componentId)
     });
-  
+
     const newOrder = Order.create({
       components: foundComposant,
-      user:user
+      user: user
     })
     const data = await Order.save(newOrder);
     return data
@@ -39,7 +39,7 @@ export class OrdersService {
   async findOneOrder(orderId: number): Promise<Order | null> {
     const data = await Order.findOne({
       where: { id: orderId },
-      relations: { components: {types:true} }
+      relations: { components: { types: true } }
     });
     return data
   }
@@ -48,18 +48,17 @@ export class OrdersService {
 
   async updateOrder(orderId: number, updateOrderDto: UpdateOrderDto): Promise<Order | null> {
 
-    const data = await Order.findOneBy({ id: orderId });
-    if (data === null) {
+    const order = await Order.findOneBy({ id: orderId });
+    if (order === null) {
       return null
     }
-    if (updateOrderDto) {
-      const foundComposant = await Composant.findBy({
-        id: In(updateOrderDto.componentId)
-      });
-      data.components = foundComposant
-      await data.save()
-    }
-    return data
+    const foundComposant = await Composant.findBy({
+      id: In(updateOrderDto.componentId)
+    });
+    order.components = foundComposant
+    await order.save()
+
+    return order
   }
 
 
