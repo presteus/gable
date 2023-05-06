@@ -62,10 +62,9 @@ export class OrdersController {
     if (!data) {
       throw new NotFoundException("L'ID ne correspond a aucun order");
     }
-    const save = await this.update(id, updateOrderDto);
     return {
       message: "order modifie",
-      data: save
+      data: data
     }
   }
 
