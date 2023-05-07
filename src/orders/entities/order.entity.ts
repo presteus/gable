@@ -18,8 +18,8 @@ export class Order extends BaseEntity {
     created_at: Date
 
     @ApiProperty()
-    @UpdateDateColumn({ type: 'timestamptz', default: null })
-    updated_at: Date;
+    @UpdateDateColumn({ type: 'timestamptz', default: null, nullable: true })
+    updated_at: Date | null;
 
 
     @ManyToOne(() => User, (user) => user.orders)

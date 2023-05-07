@@ -19,6 +19,7 @@ export class OrdersService {
       components: foundComposant,
       user: user
     })
+    newOrder.updated_at = null;
     const data = await Order.save(newOrder);
     return data
   }
@@ -56,6 +57,9 @@ export class OrdersService {
       id: In(updateOrderDto.componentId)
     });
     order.components = foundComposant
+    if (updateOrderDto.componentId) {
+      order.updated_at = new Date();
+    }
     await order.save()
 
     return order
