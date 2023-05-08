@@ -19,6 +19,7 @@ import { AuthModule } from './auth/auth.module';
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot({
+      ssl:true,
       type: 'postgres',
       logging: true,
       host: process.env.DATABASE_HOST,
