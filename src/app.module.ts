@@ -33,7 +33,7 @@ import { AuthModule } from './auth/auth.module';
         Composant,
         Type
       ],
-      synchronize: true,
+      synchronize: false,
     }),
     UsersModule,
     OrdersModule,

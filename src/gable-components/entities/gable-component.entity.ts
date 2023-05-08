@@ -27,7 +27,7 @@ export class Composant extends BaseEntity {
 
 
     @ApiProperty()
-    @Column({ type: 'money' })
+    @Column({ type: 'float' })
     price: number
 
 
